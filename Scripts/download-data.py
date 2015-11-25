@@ -12,25 +12,33 @@ def download_summary_layer(layer_url, stream=True):
     if r.status_code == 200:
         # Get name of NetCDF File
         filename = layer_url.split("/")[-1]
-        netcdf_file = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'Tooldata', filename))
+        netcdf_file = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'Tooldata', 'summary_layers', filename))
         print "%s downloaded successfully" % layer_url
         # Write File to disk
         with open(netcdf_file, 'wb') as fd:
             for chunk in r.iter_content(chunk_size=1024):
                 fd.write(chunk)
+    else:
+        print "Error %s" % r.status_code
+        print "Was not able to download file %s" % layer_url
         
     
-# Will be updated later to download all datasets
-#variable_list = ['pr', 'tasmin', 'pet', 'rhsmin', 'rsds', 'rhsmax', 'tasmax', 'was']
-#variable_dictionary = {'huss':'specific_humidity', 'pr':'precipitation', 'tasmax':'air_temperature', 'rsds':'surface_downwelling_shortwave_flux_in_air', 'tasmin':'air_temperature', 'was':'wind_speed', 'SWE-monday1':'SWE','Evaporation-monsum':'Evaporation','TotalSoilMoist-monmean':'TotalSoilMoisture', 'C_ECOSYS':'C_ECOSYS',  'PART_BURN':'PART_BURN', 'pet':'pet', 'rhsmin':'relative_humidity', 'rhsmax':'relative_humidity'}
-#variable_transform = variable_dictionary[variable]
-# Enemble of all models for each time frame
-#scenarios = ['rcp45', 'historical', 'rcp85']
-#models = '20CMIP5ModelMean'
-#month_ranges = ['ANN', 'DJF', 'MAM', 'JJA', 'SON']
-#year_ranges = ['20102039', '20702099', '19712000', '20402069']
+# URL Parameters
+variable_list = ['pr', 'tasmin', 'tasmax', 'pet', 'gdd0', 'coldestnight', 'freezefreeday']
+scenarios = ['rcp45', 'historical', 'rcp85']
+month_ranges = ['ANN', 'DJF', 'MAM', 'JJA', 'SON']
+year_ranges = ['20102039', '20702099', '19712000', '20402069']
 
-# Test URL
-url = "http://thredds.northwestknowledge.net:8080/thredds/fileServer/NWCSC_INTEGRATED_SCENARIOS_ALL_CLIMATE/projections/macav2metdata/macav2metdata_pr_DJF_19712000_historical_20CMIP5ModelMean.nc"
+# Hold all possible URLs
+url_list = []
 
-download_summary_layer(url)
+for variable in variable_list:
+    for scenario in scenarios:
+        for month_range in month_ranges:
+            for year_range in year_ranges:
+                url = "http://thredds.northwestknowledge.net:8080/thredds/fileServer/NWCSC_INTEGRATED_SCENARIOS_ALL_CLIMATE/projections/macav2metdata/macav2metdata_%s_%s_%s_%s_20CMIP5ModelMean.nc" % (variable, month_range, year_range, scenario)
+                url_list.append(url)
+
+
+for url in url_list:
+    download_summary_layer(url)
