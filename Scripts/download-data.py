@@ -40,5 +40,12 @@ for variable in variable_list:
                 url_list.append(url)
 
 
+# Make summary_layer folder to store NetCDF files if it does not exist
+if os.path.exists(os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'Tooldata', 'summary_layers'))):
+    pass
+else:
+    os.mkdir(os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'Tooldata', 'summary_layers')))
+
+
 for url in url_list:
     download_summary_layer(url)
