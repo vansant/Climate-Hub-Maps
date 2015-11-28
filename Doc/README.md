@@ -2,16 +2,17 @@
 ArcGIS Map Automation for Climate Hub Mapping Project
 
 # /Tooldata folder
-tl_2015_us_state.shp - Vector state boundaries from 2015 US CENSUS TIGER LINES http://www2.census.gov/geo/tiger/TIGER2015/STATE/tl_2015_us_state.zip
+./ClimateHub.gdb contains a feature dataset called Regions in WGS 84 (same as NetCDF Raster Layers). The Vector state boundaries are from the 2015 US CENSUS TIGER LINES http://www2.census.gov/geo/tiger/TIGER2015/STATE/tl_2015_us_state.zip
 
-Folder holds downloaded NetCDF Summary Layers
+downloaded_netcdf_files/ 
+Folder holds downloaded 30 year averaged NetCDF Summary Layers downloaded from NKN Northwest Knowledge Network via HTTP protocol
 
 # /Scripts Folder
-./requests folder
+./requests 
  Python HTTP Requests for Humans™ module from Kenneth Reitz
  https://github.com/kennethreitz/requests
 
-download-data.py - downloads/updates NetCDF summary layer datasets
+./download-data.py - downloads/updates NetCDF summary layer datasets into downloaded_netcdf_files folder
 
 General workflow overview
 
