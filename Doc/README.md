@@ -24,6 +24,10 @@ Folder holds downloaded 30 year averaged NetCDF Summary Layers downloaded from N
 downloaded_netcdf_layers/ 
 Folder than contains all geotiff (raster) layers for the downloaded NetCDF Files
 
+clipped_netcdf_layers/ 
+Folder than contains all clipped geotiff (raster) layers for each feature class region in the Region feature dataset in ClimateHub.gdb
+
+
 # /Scripts Folder
 ./requests 
  Python HTTP Requests for Humans™ module from Kenneth Reitz
@@ -34,15 +38,18 @@ Folder than contains all geotiff (raster) layers for the downloaded NetCDF Files
 
 General workflow overview
 
+This tool requires the spatial analysis extension and was written to work with ArcGIS 10.3
+
 1. Download or update NetCDF datasets to /Tooldata using download-data.py
   - Data is downloaded/updated using requests module into Tooldata/downloaded_netcdf_files/
 2. Data converted from NetCDF to Raster layers using netcdf-to-raster.py
   - Data gets converted using the make netcdf raster layer tool and stored in Tooldata/downloaded_netcdf_files/
   - mywrapper.py - used beacause ArcGIS was whining about running out of memory and it would not look through all files at the same time. A little hacky/slow but works perfectly.
 3. Raster layers clipped to regions Idaho, Oregon, Washington and Pacific Northwest. 
-4. Clipped Raster layers exported to file geodatabase
-5. Min and max values grabbed from all files after conversion from metric units
-6. Create .rtf.xml for color ramp export by right clicking then exporting rtf xml file
-7. Added layer to mxd file
-8. Apply symbology
-9. Save as a PDF
+  - Done using clip-to-region.py which uses the extract by mask (requires spatial analyist extension) analysis tool for each each raster layer and for each region in the Feature Dataset (Regions) in ClimateHub.gdb.
+  - Each new clipped layer begines with the name of the feature class and then the name of the raster layer file follows.
+4. Min and max values grabbed from all clipped layers are determined after conversion from metric units
+5. Create .rtf.xml for color ramp export by right clicking then exporting rtf xml file
+6. Added layer to mxd file
+7. Apply symbology
+8. Save as a PDF

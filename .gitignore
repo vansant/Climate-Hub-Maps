@@ -62,3 +62,5 @@ target/
 *.tfw
 *.tif.ovr
 *.tif.xml
+log
+arc.dir

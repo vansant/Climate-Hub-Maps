@@ -2,6 +2,8 @@
 
 import os
 import arcpy
+import sys
+
 netcdf_layers_folder = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'Tooldata', 'downloaded_netcdf_layers'))
 netcdf_files_folder = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'Tooldata', 'downloaded_netcdf_files'))
 
@@ -11,17 +13,14 @@ if os.path.exists(netcdf_layers_folder):
 else:
     os.mkdir(netcdf_layers_folder )
 
-
-
+# List of netcdf files
 netcdf_files = [netcdf_file for netcdf_file in os.listdir(netcdf_files_folder)]
 
-#print netcdf_files
-
+# Variable names in filename and the variable name in the NetCDF files are different so a mapping is used
 variable_list = ['pr', 'tasmin', 'tasmax', 'pet', 'gdd0', 'coldestnight', 'freezefreeday']
 variable_mapping = {'pr':'precipitation', 'tasmin':'air_temperature', 'tasmax':'air_temperature', 'pet':'pet', 'gdd0':'growing_degree_days', 'coldestnight':'air_temperature', 'freezefreeday':'freeze_free_days'}
 
 for netcdf in netcdf_files:
-    
     # Set local variables
     inNetCDFFile = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'Tooldata', 'downloaded_netcdf_files', netcdf))
 
@@ -44,7 +43,6 @@ for netcdf in netcdf_files:
         #arcpy.MakeNetCDFRasterLayer_md(inNetCDFFile, variable, XDimension, YDimension, outRasterLayer, bandDimmension, dimensionValues,valueSelectionMethod)
         #arcpy.CopyRaster_management(outRasterLayer, outRasterLayer+'.tif')
 
-        import sys
         python_path = sys.executable
         script_path = os.path.abspath(os.path.join(os.path.dirname( __file__ ), 'mywrapper.py'))
     
