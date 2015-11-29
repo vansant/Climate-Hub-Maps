@@ -1,7 +1,5 @@
 """ Scripts used to bypass arcgis memopy leaks - calls this script from a loop to clear memory"""
 
-
-
 import sys
 
 import arcpy
