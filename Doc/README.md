@@ -41,6 +41,8 @@ Folder than contains all clipped geotiff (raster) layers for each feature class 
 
  - ./clip-to-region.py - clips each raster layer to each region (Idaho, Washington, Oregon, Pacfic Northwest PNW).
 
+ - ./get-clipped-min-and-max.py - get the min and max values for each region for each variable. Usefully in providing consistent color ramp across space and time for each region/variable. Values stored in /Doc/regional-min-max.txt as comma separated values region,variable,min,max
+
 General workflow overview
 
 This tool requires the spatial analysis extension and was written to work with ArcGIS 10.3
@@ -53,8 +55,14 @@ This tool requires the spatial analysis extension and was written to work with A
 3. Raster layers clipped to regions Idaho, Oregon, Washington and Pacific Northwest. 
   - Done using clip-to-region.py which uses the extract by mask (requires spatial analyist extension) analysis tool for each each raster layer and for each region in the Feature Dataset (Regions) in ClimateHub.gdb.
   - Each new clipped layer begines with the name of the feature class and then the name of the raster layer file follows.
-4. Min and max values grabbed from all clipped layers are determined after conversion from metric units
-5. Create .rtf.xml for color ramp export by right clicking then exporting rtf xml file
-6. Added layer to mxd file
-7. Apply symbology
-8. Save as a PDF
+4. Min and max values grabbed from all clipped layers to aid with setting up .lyr files for each spatial/temporal visual anlysis
+5. Create .lry color ramp by right clicking then exporting .lyr file for each raster layer group. Region,
+  - Min and max for each region and variable via get-clipped-min-and-max.py - used as simple guid for color ramp and could actaully anything the user wants.
+  - Setup color ramp in ArcMap gui GUI and export region_variable.lyr file to /lyr folder
+  - Layers for each region can be updated in the future to remake the maps
+6. Create mxd for each region with layout view elements set up for a map
+  - Layout of elements can be updated for mxd and maps can be regenerated
+7. Add layer to regional mxd file
+8. Apply symbology from .lyr file
+9. Save as a PDF
+10. Loop through all layers and generate pdf maps
