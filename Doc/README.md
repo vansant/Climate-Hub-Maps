@@ -71,6 +71,7 @@ This tool requires the spatial analysis extension and was written to work with A
   - freezefreeday layers used color ramp: prediction
 6. Create mxd for each region with layout view elements set up for a map
   - Layout of elements can be updated for mxd and maps can be regenerated
+  - Create Idaho.mxd, Oregon.mxd, Washington.mxd, PNW.mxd 
 7. Add layer to regional mxd file
 8. Apply symbology from region-variable.lyr file
 9. Save as a PDF
