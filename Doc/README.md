@@ -16,7 +16,7 @@ Development of these user-focused maps will support transitioning to a larger, r
 
 
 # /Tooldata folder
-./ClimateHub.gdb contains a feature dataset called Regions in WGS 84 (same as NetCDF Raster Layers). The Vector state boundaries are from the 2015 US CENSUS TIGER LINES http://www2.census.gov/geo/tiger/TIGER2015/STATE/tl_2015_us_state.zip
+ClimateHub.gdb contains a feature dataset called Regions in WGS 84 (same as NetCDF Raster Layers). The Vector state boundaries are from the 2015 US CENSUS TIGER LINES http://www2.census.gov/geo/tiger/TIGER2015/STATE/tl_2015_us_state.zip
 
 downloaded_netcdf_files/ 
 Folder holds downloaded 30 year averaged NetCDF Summary Layers downloaded from NKN Northwest Knowledge Network via HTTP protocol
@@ -27,9 +27,11 @@ Folder than contains all geotiff (raster) layers for the downloaded NetCDF Files
 clipped_netcdf_layers/ 
 Folder than contains all clipped geotiff (raster) layers for each feature class region in the Region feature dataset in ClimateHub.gdb
 
+/lyr
+Folder that contains the .lyr styles for each region-variable combination. For example Idaho-pr.lyr is the .lyr file containg the symbology to be applied to all precipitation layers which were clipped to the Idaho region.
 
 # /Scripts Folder
-./requests 
+/requests 
  Python HTTP Requests for Humans™ module from Kenneth Reitz
  https://github.com/kennethreitz/requests
 
@@ -56,13 +58,20 @@ This tool requires the spatial analysis extension and was written to work with A
   - Done using clip-to-region.py which uses the extract by mask (requires spatial analyist extension) analysis tool for each each raster layer and for each region in the Feature Dataset (Regions) in ClimateHub.gdb.
   - Each new clipped layer begines with the name of the feature class and then the name of the raster layer file follows.
 4. Min and max values grabbed from all clipped layers to aid with setting up .lyr files for each spatial/temporal visual anlysis
-5. Create .lry color ramp by right clicking then exporting .lyr file for each raster layer group. Region,
+5. Create .lyr color ramp for each region/variable using the min-max values generated in the last step by  setting min and max as option under symbology. Export by right clicking on layer in table of contents to export.lyr file for each raster layer group (region-variable).
   - Min and max for each region and variable via get-clipped-min-and-max.py - used as simple guid for color ramp and could actaully anything the user wants.
-  - Setup color ramp in ArcMap gui GUI and export region_variable.lyr file to /lyr folder
-  - Layers for each region can be updated in the future to remake the maps
+  - Setup color ramp in ArcMap gui GUI and export region_variable.lyr file to /Tooldata/lyr folder. This is done under the symbology tab. Stretched needs to be selected on the lefthand side of the screen. Under type Minimum-Maximum needs to be checked. Then Edit High/Low Values needs to be ticked. The values can then be updated and a color ramp can be chosen.
+  - Layers for each region can be updated in the future to change layer symbology
+  - precipitation layers used coloramp: precipitation
+  - tasmin layers used color ramp: slope
+  - tasmax layers used color ramp: slope
+  - pet layers used color ramp: condition number
+  - gdd0 layers used color ramp: red light to dark
+  - coldestnight layers used color ramp: blue light to darn (inverted)
+  - freezefreeday layers used color ramp: prediction
 6. Create mxd for each region with layout view elements set up for a map
   - Layout of elements can be updated for mxd and maps can be regenerated
 7. Add layer to regional mxd file
-8. Apply symbology from .lyr file
+8. Apply symbology from region-variable.lyr file
 9. Save as a PDF
-10. Loop through all layers and generate pdf maps
+10.Repeat for all clipped raster layers
