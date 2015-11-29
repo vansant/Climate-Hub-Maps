@@ -33,10 +33,13 @@ Folder than contains all clipped geotiff (raster) layers for each feature class 
  Python HTTP Requests for Humans™ module from Kenneth Reitz
  https://github.com/kennethreitz/requests
 
-./download-data.py - downloads/updates NetCDF summary layer datasets into downloaded_netcdf_files folder
-./netcdf-to-raster.py - converts netcdf files to raster (geotiff layers) as stores them in /Tooldata/downloaded_netcdf_layers/ 
-./mywrapper.py - runs a new process for each command
-./clip-to-region.py - clips each raster layer to each region (Idaho, Washington, Oregon, Pacfic Northwest PNW).
+ - ./download-data.py - downloads/updates NetCDF summary layer datasets into downloaded_netcdf_files folder
+
+ - ./netcdf-to-raster.py - converts netcdf files to raster (geotiff layers) as stores them in /Tooldata/downloaded_netcdf_layers/ 
+
+ - ./mywrapper.py - runs a new process for each command
+
+ - ./clip-to-region.py - clips each raster layer to each region (Idaho, Washington, Oregon, Pacfic Northwest PNW).
 
 General workflow overview
 
