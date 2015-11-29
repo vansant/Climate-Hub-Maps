@@ -57,3 +57,8 @@ docs/_build/
 target/
 
 *.nc
+*.tif
+*.tif.aux.xml
+*.tfw
+*.tif.ovr
+*.tif.xml
