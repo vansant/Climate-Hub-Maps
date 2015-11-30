@@ -45,6 +45,8 @@ Folder that contains the .lyr styles for each region-variable combination. For e
 
  - ./get-clipped-min-and-max.py - get the min and max values for each region for each variable. Usefully in providing consistent color ramp across space and time for each region/variable. Values stored in /Doc/regional-min-max.txt as comma separated values region,variable,min,max
 
+- ./make-maps.py - script that loops over each regional map document (Idaho, Washington, Oregon, PNW) and over all clipped raster layers (all variables and time periods). Each layer is added to the map document, a style is applied from a .lyr file, and then the map is exported as a pdf to /Doc/maps. There are over 600 maps procuded
+
 General workflow overview
 
 This tool requires the spatial analysis extension and was written to work with ArcGIS 10.3

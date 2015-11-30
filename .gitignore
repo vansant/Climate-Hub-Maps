@@ -64,3 +64,4 @@ target/
 *.tif.xml
 log
 arc.dir
+Doc/maps/
