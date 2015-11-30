@@ -3,6 +3,7 @@ import os
 
 import arcpy
 from arcpy import env
+import sys
 
 # Main project folder of the / top level folder for the project
 project_root = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..'))
@@ -41,19 +42,26 @@ lyr_folder = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'To
 # Set environment to project root
 env.workspace = project_root
 
+# Used to call map-wrapper
+python_path = sys.executable
+script_path = os.path.abspath(os.path.join(os.path.dirname( __file__ ), 'mapwrapper.py'))
+    
+
 for region in regions:
     print region
 
+    mxd = "%s.mxd" % region
     # Assign correct mxd
-    for mxd in mxd_list:
-        if mxd.startswith(region):
+    #for mxd in mxd_list:
+    #    if mxd.startswith(region):
             #print mxd
-            #mxd = 
-            mxd_path = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', mxd))
+    #        mxd = mxd 
+            #mxd_path = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', mxd))
     # Loop through variables
     for variable in variables:
         print region, variable
-        lyr_file = os.path.abspath(os.path.join( lyr_folder, '%s-%s.lyr' % (region, variable)))
+        #lyr_file = str(os.path.abspath(os.path.join( lyr_folder, '%s-%s.lyr' % (region, variable))))
+        lyr_file = '%s_%s.lyr' % (region, variable)
         print lyr_file
 
         # Group of region and variable
@@ -67,6 +75,7 @@ for region in regions:
         # Update text datafields
         # Save map as pdf
         for layer_name in layer_group:
-            mxd = arcpy.mapping.MapDocument(mxd_path)
-            arcpy.mapping.ExportToPDF(mxd, os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'Doc', 'maps', '%s.pdf' % layer_name)))
-
+            #print "This", layer_name
+            #layer_path = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'Tooldata', 'clipped_netcdf_layers', layer_name))
+            print python_path, script_path, mxd, layer_name, lyr_file
+            os.system("%s %s %s %s %s" %(python_path, script_path, mxd, layer_name, lyr_file))
