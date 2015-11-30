@@ -43,7 +43,7 @@ Folder that contains the .lyr styles for each region-variable combination. For e
 
  - ./clip-to-region.py - clips each raster layer to each region (Idaho, Washington, Oregon, Pacfic Northwest PNW).
 
- - ./get-clipped-min-and-max.py - get the min and max values for each region for each variable. Usefully in providing consistent color ramp across space and time for each region/variable. Values stored in /Doc/regional-min-max.txt as comma separated values region,variable,min,max
+ - ./get-clipped-statistics.py - get the min, max, mean, and standard devation (std) values for each region for each variable. Usefully in providing consistent color ramp across space and time for each region/variable. Values stored in /Doc/regional-statistics.txt as comma separated values region,variable,min,max, mean, std
 
 - ./make-maps.py - script that loops over each regional map document (Idaho, Washington, Oregon, PNW) and over all clipped raster layers (all variables and time periods). Each layer is added to the map document, a style is applied from a .lyr file, and then the map is exported as a pdf to /Doc/maps. There are over 600 maps procuded
 
@@ -60,8 +60,7 @@ This tool requires the spatial analysis extension and was written to work with A
   - Done using clip-to-region.py which uses the extract by mask (requires spatial analyist extension) analysis tool for each each raster layer and for each region in the Feature Dataset (Regions) in ClimateHub.gdb.
   - Each new clipped layer begines with the name of the feature class and then the name of the raster layer file follows.
 4. Min and max values grabbed from all clipped layers to aid with setting up .lyr files for each spatial/temporal visual anlysis
-5. Create .lyr color ramp for each region/variable using the min-max values generated in the last step by  setting min and max as option under symbology. Export by right clicking on layer in table of contents to export.lyr file for each raster layer group (region-variable).
-  - Min and max for each region and variable via get-clipped-min-and-max.py - used as simple guid for color ramp and could actaully anything the user wants.
+5. Create .lyr color ramp for each region/variable using the regional statistics values generated in the last step by  setting min, max, mean, and std as options under symbology using custom in stretched. Export by right clicking on layer in table of contents to export.lyr file for each raster layer group (region-variable).
   - Setup color ramp in ArcMap gui GUI and export region_variable.lyr file to /Tooldata/lyr folder. This is done under the symbology tab. Stretched needs to be selected on the lefthand side of the screen. Under type Minimum-Maximum needs to be checked. Then Edit High/Low Values needs to be ticked. The values can then be updated and a color ramp can be chosen.
   - Layers for each region can be updated in the future to change layer symbology for each .lyr file
   - precipitation layers used coloramp: precipitation
@@ -77,4 +76,4 @@ This tool requires the spatial analysis extension and was written to work with A
 7. Run make-maps.py which processes all clipped raster layer
   - Adds layer to regional mxd file
   - Applies symbology from region-variable.lyr file
-  - Save as a PDF
+  - Save as a PDF into /Doc/maps
