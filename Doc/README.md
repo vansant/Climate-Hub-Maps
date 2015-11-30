@@ -61,7 +61,7 @@ This tool requires the spatial analysis extension and was written to work with A
   - Each new clipped layer begines with the name of the feature class and then the name of the raster layer file follows.
 4. Min and max values grabbed from all clipped layers to aid with setting up .lyr files for each spatial/temporal visual anlysis
 5. Create .lyr color ramp for each region/variable using the regional statistics values generated in the last step by  setting min, max, mean, and std as options under symbology using custom in stretched. Export by right clicking on layer in table of contents to export.lyr file for each raster layer group (region-variable).
-  - Setup color ramp in ArcMap gui GUI and export region_variable.lyr file to /Tooldata/lyr folder. This is done under the symbology tab. Stretched needs to be selected on the lefthand side of the screen. Under type Minimum-Maximum needs to be checked. Then Edit High/Low Values needs to be ticked. The values can then be updated and a color ramp can be chosen.
+  - Setup color ramp in ArcMap gui GUI and export region_variable.lyr file to /Tooldata/lyr folder. This is done under the symbology tab. Stretched needs to be selected on the lefthand side of the screen. Under type Minimum-Maximum needs to be checked. Scroll down and select from custom settings below instead of from each raster. The values can then be updated and a color ramp can be chosen.
   - Layers for each region can be updated in the future to change layer symbology for each .lyr file
   - precipitation layers used coloramp: precipitation
   - tasmin layers used color ramp: slope
