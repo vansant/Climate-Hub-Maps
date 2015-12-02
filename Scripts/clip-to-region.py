@@ -14,7 +14,7 @@ else:
 
 # Climate Hub file geodatabase path
 feature_dataset_path = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'Tooldata', 'ClimateHub.gdb', 'Regions'))
-netcdf_layer_folder = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'Tooldata', 'downloaded_netcdf_layers'))
+netcdf_layer_folder = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'Tooldata', 'conversion_layers'))
 env.workspace = feature_dataset_path 
 fcList = arcpy.ListFeatureClasses()
 
@@ -41,13 +41,13 @@ for fc in fcList:
             #print rectExtract
             #rectExtract.save(os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'Tooldata', netcdf_clipped_layers, fc + '_' + netcdf[:-4] + '.tif')))
             #arcpy.sa.RasterCalculator("\"%%s%\" * 0.0393701" % rectExtract , os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'Tooldata', netcdf_clipped_layers, fc + '_' + netcdf[:-4] + '.tif')))
-            raster_layer = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'Tooldata', 'downloaded_netcdf_layers', netcdf))
-            rectExtract = arcpy.sa.ExtractByRectangle(conversion, "-124.792995 41.5 -109.5 49.415758", "INSIDE")
+            raster_layer = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'Tooldata', 'conversion_layers', netcdf))
+            rectExtract = arcpy.sa.ExtractByRectangle(raster_layer, "-124.792995 41.5 -109.5 49.415758", "INSIDE")
             rectExtract.save(os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'Tooldata', netcdf_clipped_layers, fc + '_' + netcdf[:-4] + '.tif')))
             
 
         else:
-            outExtractByMask = ExtractByMask(os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'Tooldata', 'downloaded_netcdf_layers', netcdf)), fc)
+            outExtractByMask = ExtractByMask(os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'Tooldata', 'conversion_layers', netcdf)), fc)
             outExtractByMask.save(os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'Tooldata', netcdf_clipped_layers, fc + '_' + netcdf[:-4] + '.tif'))) 
     
 
