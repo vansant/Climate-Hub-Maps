@@ -18,7 +18,7 @@ netcdf_files = [netcdf_file for netcdf_file in os.listdir(netcdf_files_folder)]
 
 # Variable names in filename and the variable name in the NetCDF files are different so a mapping is used
 variable_list = ['pr', 'tasmin', 'tasmax', 'pet', 'gdd0', 'coldestnight', 'freezefreeday']
-variable_mapping = {'pr':'precipitation', 'tasmin':'air_temperature', 'tasmax':'air_temperature', 'pet':'pet', 'gdd0':'growing_degree_days', 'coldestnight':'air_temperature', 'freezefreeday':'freeze_free_days'}
+variable_mapping = {'pr':'precipitation', 'tasmin':'air_temperature', 'tasmax':'air_temperature', 'pet':'pet', 'gdd0':'growing_degree_days', 'coldestnight':'air_temperature', 'freezefreeday':'freeze_free_days', 'prpercent':'pon', 'rhsmax': 'relative_humidity', 'rhsmin':'relative_humidity', 'rsds':'surface_downwelling_shortwave_flux_in_air','was':'wind_speed'}
 
 for netcdf in netcdf_files:
     # Set local variables

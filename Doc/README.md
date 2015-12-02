@@ -41,7 +41,7 @@ Folder that contains the .lyr styles for each region-variable combination. For e
 
  - ./mywrapper.py - runs a new process for each command
 
- - ./clip-to-region.py - clips each raster layer to each region (Idaho, Washington, Oregon, Pacfic Northwest PNW).
+ - ./clip-to-region.py - clips each raster layer to each region (Idaho, Washington, Oregon, Pacfic Northwest PNW). If Region is PNW the clip is to a spatial extent of -124.792995 41.5 -109.5 49.415758 (WGS 84). The other clip methods are extract by mask using the feature class layers in ClimateHub.gdb/Regions
 
  - ./get-clipped-statistics.py - get the min, max, mean, and standard devation (std) values for each region for each variable. Usefully in providing consistent color ramp across space and time for each region/variable. Values stored in /Doc/regional-statistics.txt as comma separated values region,variable,min,max, mean, std
 

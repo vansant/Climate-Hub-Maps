@@ -6,14 +6,14 @@ import os
 def download_summary_layer(layer_url, stream=True):
     """ Save NetCDF to file from HTTP URL"""
 
-    print("Downloading %s" % layer_url)
+    #print("Downloading %s" % layer_url)
     r = requests.get(layer_url)
 
     if r.status_code == 200:
         # Get name of NetCDF File
         filename = layer_url.split("/")[-1]
         netcdf_file = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'Tooldata', 'downloaded_netcdf_files', filename))
-        print "%s downloaded successfully" % layer_url
+        #print "%s downloaded successfully" % layer_url
         # Write File to disk
         with open(netcdf_file, 'wb') as fd:
             for chunk in r.iter_content(chunk_size=1024):
@@ -24,7 +24,7 @@ def download_summary_layer(layer_url, stream=True):
         
     
 # URL Parameters
-variable_list = ['pr', 'tasmin', 'tasmax', 'pet', 'gdd0', 'coldestnight', 'freezefreeday']
+variable_list = ['pr', 'tasmin', 'tasmax', 'pet', 'gdd0', 'coldestnight', 'freezefreeday', 'prpercent', 'rhsmax', 'rhsmin', 'rsds', 'was']
 scenarios = ['rcp45', 'historical', 'rcp85']
 month_ranges = ['ANN', 'DJF', 'MAM', 'JJA', 'SON']
 year_ranges = ['20102039', '20702099', '19712000', '20402069']
@@ -40,11 +40,25 @@ for variable in variable_list:
                 if year_range == "19712000" and not scenario == "historical":pass
                 elif not year_range == "19712000" and scenario == "historical":pass
                 else:
+                    # Get urls for normal periods
                     if variable in ['gdd0', 'coldestnight', 'freezefreeday']:
                         url = "http://thredds.northwestknowledge.net:8080/thredds/fileServer/NWCSC_INTEGRATED_SCENARIOS_ALL_CLIMATE/projections/macav2metdata/macav2metdata_%s_%s_%s_20CMIP5ModelMean.nc" % (variable, year_range, scenario)
+                        url_list.append(url)
                     else:
-                        url = "http://thredds.northwestknowledge.net:8080/thredds/fileServer/NWCSC_INTEGRATED_SCENARIOS_ALL_CLIMATE/projections/macav2metdata/macav2metdata_%s_%s_%s_%s_20CMIP5ModelMean.nc" % (variable, month_range, year_range, scenario)
-                    url_list.append(url)
+                        # Get urls for normal periods
+                        # prpercent does not have raw 30 year periods of data as it is a difference of future vs historical only
+                        if variable == "prpercent":pass
+                        else:
+                            url = "http://thredds.northwestknowledge.net:8080/thredds/fileServer/NWCSC_INTEGRATED_SCENARIOS_ALL_CLIMATE/projections/macav2metdata/macav2metdata_%s_%s_%s_%s_20CMIP5ModelMean.nc" % (variable, month_range, year_range, scenario)
+                            url_list.append(url)
+
+                            # Historical is not vs historical so pass 
+                            if scenario == "historical" or year_range == '19712000':pass
+
+                            else:
+                                # Get the difference from normal dataset urls
+                                url_differece_from_normal = "http://thredds.northwestknowledge.net:8080/thredds/fileServer/NWCSC_INTEGRATED_SCENARIOS_ALL_CLIMATE/projections/macav2metdata/macav2metdata_%s_%s_%s_%s_vs_19712000_20CMIP5ModelMean.nc" % (variable, month_range, year_range, scenario)
+                                url_list.append(url_differece_from_normal)
 
 
 # Make summary_layer folder to store NetCDF files if it does not exist
