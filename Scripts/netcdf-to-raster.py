@@ -17,8 +17,8 @@ else:
 netcdf_files = [netcdf_file for netcdf_file in os.listdir(netcdf_files_folder)]
 
 # Variable names in filename and the variable name in the NetCDF files are different so a mapping is used
-variable_list = ['pr', 'tasmin', 'tasmax', 'pet', 'gdd0', 'coldestnight', 'freezefreeday']
-variable_mapping = {'pr':'precipitation', 'tasmin':'air_temperature', 'tasmax':'air_temperature', 'pet':'pet', 'gdd0':'growing_degree_days', 'coldestnight':'air_temperature', 'freezefreeday':'freeze_free_days', 'prpercent':'pon', 'rhsmax': 'relative_humidity', 'rhsmin':'relative_humidity', 'rsds':'surface_downwelling_shortwave_flux_in_air','was':'wind_speed'}
+variable_list =  ['pr', 'tasmin', 'tasmax', 'pet', 'gdd0', 'gdd3', 'gdd5','gdd10', 'coldestnight', 'freezefreeday', 'prpercent', 'rhsmax', 'rhsmin', 'rsds', 'was']
+variable_mapping = {'pr':'precipitation', 'tasmin':'air_temperature', 'tasmax':'air_temperature', 'pet':'pet', 'gdd0':'growing_degree_days', 'gdd3':'growing_degree_days', 'gdd5':'growing_degree_days', 'gdd10':'growing_degree_days', 'coldestnight':'air_temperature', 'freezefreeday':'freeze_free_days', 'prpercent':'pon', 'rhsmax': 'relative_humidity', 'rhsmin':'relative_humidity', 'rsds':'surface_downwelling_shortwave_flux_in_air','was':'wind_speed'}
 
 for netcdf in netcdf_files:
     # Set local variables
@@ -35,7 +35,7 @@ for netcdf in netcdf_files:
     dimensionValues = ""
     valueSelectionMethod = ""
 
-    #print inNetCDFFile
+    print inNetCDFFile
     #print outRasterLayer
 
     try:
@@ -45,9 +45,14 @@ for netcdf in netcdf_files:
 
         python_path = sys.executable
         script_path = os.path.abspath(os.path.join(os.path.dirname( __file__ ), 'mywrapper.py'))
-    
-        os.system("%s %s %s %s %s" %(python_path, script_path, inNetCDFFile, variable, outRasterLayer))
+
+        if os.path.isfile(outRasterLayer+'.tif'):
+            print "%s exists" % outRasterLayer
+        else:
+            os.system("%s %s %s %s %s" %(python_path, script_path, inNetCDFFile, variable, outRasterLayer))
 
     except:
         print "could not make layer"
         print arcpy.GetMessages()
+        break
+        

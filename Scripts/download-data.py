@@ -24,7 +24,7 @@ def download_summary_layer(layer_url, stream=True):
         
     
 # URL Parameters
-variable_list = ['pr', 'tasmin', 'tasmax', 'pet', 'gdd0', 'coldestnight', 'freezefreeday', 'prpercent', 'rhsmax', 'rhsmin', 'rsds', 'was']
+variable_list = ['pr', 'tasmin', 'tasmax', 'pet', 'gdd0', 'gdd3', 'gdd5','gdd10', 'coldestnight', 'freezefreeday', 'prpercent', 'rhsmax', 'rhsmin', 'rsds', 'was']
 scenarios = ['rcp45', 'historical', 'rcp85']
 month_ranges = ['ANN', 'DJF', 'MAM', 'JJA', 'SON']
 year_ranges = ['20102039', '20702099', '19712000', '20402069']
@@ -41,7 +41,7 @@ for variable in variable_list:
                 elif not year_range == "19712000" and scenario == "historical":pass
                 else:
                     # Get urls for normal periods
-                    if variable in ['gdd0', 'coldestnight', 'freezefreeday']:
+                    if variable in ['gdd0', 'gdd3', 'gdd5','gdd10', 'coldestnight', 'freezefreeday']:
                         url = "http://thredds.northwestknowledge.net:8080/thredds/fileServer/NWCSC_INTEGRATED_SCENARIOS_ALL_CLIMATE/projections/macav2metdata/macav2metdata_%s_%s_%s_20CMIP5ModelMean.nc" % (variable, year_range, scenario)
                         url_list.append(url)
                     else:
