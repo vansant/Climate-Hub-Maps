@@ -29,13 +29,26 @@ else:
 netcdf_layers = [x for x in os.listdir(netcdf_layer_folder) if x.endswith('.tif')]
 print netcdf_layers, len(netcdf_layers)
 
+
+
 # Clip rasters to each fc (region in feature dataset)
 for fc in fcList:
     print fc
     for netcdf in netcdf_layers:
         print fc, netcdf
-        outExtractByMask = ExtractByMask(os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'Tooldata', 'downloaded_netcdf_layers', netcdf)), fc)
-        outExtractByMask.save(os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'Tooldata', netcdf_clipped_layers, fc + '_' + netcdf[:-4] + '.tif'))) 
+        if fc == "PNW":
+            #rectExtract = arcpy.sa.ExtractByRectangle(os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'Tooldata', 'downloaded_netcdf_layers', netcdf)), "-124.792995 41.5 -109.5 49.415758", "INSIDE")
+            #print rectExtract
+            #rectExtract.save(os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'Tooldata', netcdf_clipped_layers, fc + '_' + netcdf[:-4] + '.tif')))
+            #arcpy.sa.RasterCalculator("\"%%s%\" * 0.0393701" % rectExtract , os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'Tooldata', netcdf_clipped_layers, fc + '_' + netcdf[:-4] + '.tif')))
+            raster_layer = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'Tooldata', 'downloaded_netcdf_layers', netcdf))
+            rectExtract = arcpy.sa.ExtractByRectangle(conversion, "-124.792995 41.5 -109.5 49.415758", "INSIDE")
+            rectExtract.save(os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'Tooldata', netcdf_clipped_layers, fc + '_' + netcdf[:-4] + '.tif')))
+            
+
+        else:
+            outExtractByMask = ExtractByMask(os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'Tooldata', 'downloaded_netcdf_layers', netcdf)), fc)
+            outExtractByMask.save(os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'Tooldata', netcdf_clipped_layers, fc + '_' + netcdf[:-4] + '.tif'))) 
     
 
 arcpy.CheckInExtension("Spatial")

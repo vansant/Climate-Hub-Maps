@@ -47,6 +47,8 @@ Folder that contains the .lyr styles for each region-variable combination. For e
 
 - ./make-maps.py - script that loops over each regional map document (Idaho, Washington, Oregon, PNW) and over all clipped raster layers (all variables and time periods). Each layer is added to the map document, a style is applied from a .lyr file, and then the map is exported as a pdf to /Doc/maps. There are over 600 maps procuded
 
+- ./unit-conversion.py -  script that applies unit conversion to raw raster layers and stores them in /Tooldata/conversion_layers
+
 General workflow overview
 
 This tool requires the spatial analysis extension and was written to work with ArcGIS 10.3
@@ -56,29 +58,30 @@ This tool requires the spatial analysis extension and was written to work with A
 2. Data converted from NetCDF to Raster layers using netcdf-to-raster.py
   - Data gets converted using the make netcdf raster layer tool and stored in Tooldata/downloaded_netcdf_layers/
   - mywrapper.py - used beacause ArcGIS was complaining about running out of memory (not an issue in 10.2 using same methods) and it would not loop through all files at the same time. A little hacky/slow but works perfectly.
-3. Raster layers clipped to regions Idaho, Oregon, Washington and Pacific Northwest. 
-  - Done using clip-to-region.py which uses the extract by mask (requires spatial analyist extension) analysis tool for each each raster layer and for each region in the Feature Dataset (Regions) in ClimateHub.gdb. If Region is PNW the clip is to a spatial extent of -124.792995 41.5 -109.5 49.415758 (WGS 84).
-  - Each new clipped layer begines with the name of the feature class and then the name of the raster layer file follows.
+3. Layers get unit conversions applied
   - variable units and unit conversions
-    pr - from millimeters to inches
-      inch = mm * 0.0393701 
-    tasmin and tasmax - from kelvin to fahrenheit
-      °F = 9/5(°K - 273) + 32
-    pet - from millimeters to inches
-      inch = mm * 0.0393701 
-    gdd0 - from celcius to fahrenheit
-      °F = 9/5 × (°C) + 32
-    coldestnight - from kelvin to fahrenheit
-      °F = 9/5(°K - 273) + 32
-    freezefreeday - no change units in days
-    prpercent - no change units in percent departure from 1971-2000 normal
-    rhsmin and rhsmax - no change units in percent
-    rsds - no change units in W/m2
-    was - m/s (meters per second) to mph (miles per hour)
-      mph = m/s * 2.237
+    #pr - from millimeters to inches
+    #  inch = mm * 0.0393701 
+    #tasmin and tasmax - from kelvin to fahrenheit
+    #  °F = (°K * 9/5.) - 459.67
+    #pet - from millimeters to inches
+    #  inch = mm * 0.0393701 
+    #gdd0, gdd3, gdd5, gdd10 - from celcius to fahrenheit
+    #  °F = 9/5 × (°C) + 32
+    #coldestnight - from kelvin to fahrenheit
+    #  °F = (°K * 9/5.) - 459.67
+    #freezefreeday - no change units in days
+    #prpercent - no change units in percent departure from 1971-2000 normal
+    #rhsmin and rhsmax - no change units in percent
+    #rsds - no change units in W/m2
+    #was - m/s (meters per second) to mph (miles per hour)
+    #  mph = m/s * 2.237
+4. Raster layers clipped to regions Idaho, Oregon, Washington and Pacific Northwest. 
+  - Done using clip-to-region.py which uses the extract by mask (requires spatial analyist extension) analysis tool for each each raster layer and for each region in the Feature Dataset (Regions) in ClimateHub.gdb. If Region is PNW the clip is to a spatial extent of -124.792995 41.5 -109.5 49.415758 (WGS 84).
+  - Each new clipped layer begins with the name of the feature class and then the name of the raster layer file follows.
 
-4. Min, max, mean, and std (standard deviation) values grabbed from all clipped layers to aid with setting up .lyr files for each spatial/temporal visual anlysis
-5. Create .lyr color ramp for each region/variable using the regional statistics values generated in the last step by  setting min, max, mean, and std as options under symbology using custom in stretched. Export by right clicking on layer in table of contents to export.lyr file for each raster layer group (region-variable).
+5. Min, max, mean, and std (standard deviation) values grabbed from all clipped layers to aid with setting up .lyr files for each spatial/temporal visual anlysis
+6. Create .lyr color ramp for each region/variable using the regional statistics values generated in the last step by  setting min, max, mean, and std as options under symbology using custom in stretched. Export by right clicking on layer in table of contents to export.lyr file for each raster layer group (region-variable).
   - Setup color ramp in ArcMap gui GUI and export region_variable.lyr file to /Tooldata/lyr folder. This is done under the symbology tab. Stretched needs to be selected on the lefthand side of the screen. Under type Minimum-Maximum needs to be checked. Scroll down and select from custom settings below instead of from each raster. The values can then be updated and a color ramp can be chosen.
   - Layers for each region can be updated in the future to change layer symbology for each .lyr file
   - precipitation layers used coloramp: precipitation
@@ -88,10 +91,10 @@ This tool requires the spatial analysis extension and was written to work with A
   - gdd0 layers used color ramp: red light to dark
   - coldestnight layers used color ramp: blue light to dark (inverted)
   - freezefreeday layers used color ramp: prediction
-6. Create mxd for each region with layout view elements set up for a each MXD
+7. Create mxd for each region with layout view elements set up for a each MXD
   - Layout of elements can be updated for mxd and maps can be regenerated
   - Create Idaho.mxd, Oregon.mxd, Washington.mxd, PNW.mxd 
-7. Run make-maps.py which processes all clipped raster layer
+8. Run make-maps.py which processes all clipped raster layer
   - Adds layer to regional mxd file
   - Applies symbology from region-variable.lyr file
   - Save as a PDF into /Doc/maps
