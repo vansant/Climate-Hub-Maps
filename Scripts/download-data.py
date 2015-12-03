@@ -24,7 +24,7 @@ def download_summary_layer(layer_url, stream=True):
         
     
 # URL Parameters
-variable_list = ['pr', 'tasmin', 'tasmax', 'pet', 'gdd0', 'gdd3', 'gdd5','gdd10', 'coldestnight', 'freezefreeday', 'prpercent', 'rhsmax', 'rhsmin', 'rsds', 'was']
+variable_list = ['prpercent']#'pr', 'tasmin', 'tasmax', 'pet', 'gdd0', 'gdd3', 'gdd5','gdd10', 'coldestnight', 'freezefreeday', 'prpercent', 'rhsmax', 'rhsmin', 'rsds', 'was']
 scenarios = ['rcp45', 'historical', 'rcp85']
 month_ranges = ['ANN', 'DJF', 'MAM', 'JJA', 'SON']
 year_ranges = ['20102039', '20702099', '19712000', '20402069']
@@ -53,12 +53,12 @@ for variable in variable_list:
                             url_list.append(url)
 
                             # Historical is not vs historical so pass 
-                            if scenario == "historical" or year_range == '19712000':pass
+                        if scenario == "historical" or year_range == '19712000':pass
 
-                            else:
-                                # Get the difference from normal dataset urls
-                                url_differece_from_normal = "http://thredds.northwestknowledge.net:8080/thredds/fileServer/NWCSC_INTEGRATED_SCENARIOS_ALL_CLIMATE/projections/macav2metdata/macav2metdata_%s_%s_%s_%s_vs_19712000_20CMIP5ModelMean.nc" % (variable, month_range, year_range, scenario)
-                                url_list.append(url_differece_from_normal)
+                        else:
+                            # Get the difference from normal dataset urls
+                            url_differece_from_normal = "http://thredds.northwestknowledge.net:8080/thredds/fileServer/NWCSC_INTEGRATED_SCENARIOS_ALL_CLIMATE/projections/macav2metdata/macav2metdata_%s_%s_%s_%s_vs_19712000_20CMIP5ModelMean.nc" % (variable, month_range, year_range, scenario)
+                            url_list.append(url_differece_from_normal)
 
 
 # Make summary_layer folder to store NetCDF files if it does not exist
@@ -69,4 +69,5 @@ else:
 
 
 for url in url_list:
+    #print url
     download_summary_layer(url)
