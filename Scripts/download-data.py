@@ -24,7 +24,7 @@ def download_summary_layer(layer_url, stream=True):
         
     
 # URL Parameters
-variable_list = ['prpercent']#'pr', 'tasmin', 'tasmax', 'pet', 'gdd0', 'gdd3', 'gdd5','gdd10', 'coldestnight', 'freezefreeday', 'prpercent', 'rhsmax', 'rhsmin', 'rsds', 'was']
+variable_list = ['pr', 'tasmin', 'tasmax', 'pet', 'gdd0', 'gdd3', 'gdd5','gdd10', 'coldestnight', 'freezefreeday', 'prpercent', 'rhsmax', 'rhsmin', 'rsds', 'was']
 scenarios = ['rcp45', 'historical', 'rcp85']
 month_ranges = ['ANN', 'DJF', 'MAM', 'JJA', 'SON']
 year_ranges = ['20102039', '20702099', '19712000', '20402069']
@@ -68,6 +68,18 @@ else:
     os.mkdir(os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'Tooldata', 'downloaded_netcdf_files')))
 
 
+netcdf_files_folder = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'Tooldata', 'downloaded_netcdf_files'))
+
+# See if exists, otherwise download
 for url in url_list:
     #print url
-    download_summary_layer(url)
+    file_name = url.split('/')[-1]
+    netcdf_file = os.path.abspath(os.path.join(netcdf_files_folder, file_name))
+    #print netcdf_file
+    if os.path.exists(netcdf_file):
+        print "%s already exists" % netcdf_file
+        pass
+    else:
+        print "Downloading %s" % netcdf_file
+        download_summary_layer(url)
+
