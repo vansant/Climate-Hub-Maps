@@ -76,21 +76,18 @@ This tool requires the spatial analysis extension and was written to work with A
     #rsds - no change units in W/m2
     #was - m/s (meters per second) to mph (miles per hour)
     #  mph = m/s * 2.237
+
+    Is a summary layer is vs the normal period and also temperature the conversion is
+    to multiple the original nummbers by 1.8
 4. Raster layers clipped to regions Idaho, Oregon, Washington and Pacific Northwest. 
   - Done using clip-to-region.py which uses the extract by mask (requires spatial analyist extension) analysis tool for each each raster layer and for each region in the Feature Dataset (Regions) in ClimateHub.gdb. If Region is PNW the clip is to a spatial extent of -124.792995 41.5 -109.5 49.415758 (WGS 84).
   - Each new clipped layer begins with the name of the feature class and then the name of the raster layer file follows.
 
-5. Min, max, mean, and std (standard deviation) values grabbed from all clipped layers to aid with setting up .lyr files for each spatial/temporal visual anlysis
-6. Create .lyr color ramp for each region/variable using the regional statistics values generated in the last step by  setting min, max, mean, and std as options under symbology using custom in stretched. Export by right clicking on layer in table of contents to export.lyr file for each raster layer group (region-variable).
-  - Setup color ramp in ArcMap gui GUI and export region_variable.lyr file to /Tooldata/lyr folder. This is done under the symbology tab. Stretched needs to be selected on the lefthand side of the screen. Under type Minimum-Maximum needs to be checked. Scroll down and select from custom settings below instead of from each raster. The values can then be updated and a color ramp can be chosen.
-  - Layers for each region can be updated in the future to change layer symbology for each .lyr file
-  - precipitation layers used coloramp: precipitation
-  - tasmin layers used color ramp: slope
-  - tasmax layers used color ramp: slope
-  - pet layers used color ramp: condition number
-  - gdd0 layers used color ramp: red light to dark
-  - coldestnight layers used color ramp: blue light to dark (inverted)
-  - freezefreeday layers used color ramp: prediction
+Classify Raster method
+5. Classify rasters with classify-rasters.py
+
+6. Create .clr color ramp for each variable using style.txt and generate-clr.py
+
 7. Create mxd for each region with layout view elements set up for a each MXD
   - Layout of elements can be updated for mxd and maps can be regenerated
   - Create Idaho.mxd, Oregon.mxd, Washington.mxd, PNW.mxd 
