@@ -41,13 +41,17 @@ Folder that contains the .lyr styles for each region-variable combination. For e
 
  - ./mywrapper.py - runs a new process for each command
 
+ - ./unit-conversion.py -  script that applies unit conversion to raw raster layers and stores them in /Tooldata/conversion_layers
+
  - ./clip-to-region.py - clips each raster layer to each region (Idaho, Washington, Oregon, Pacfic Northwest PNW). If Region is PNW the clip is to a spatial extent of -124.792995 41.5 -109.5 49.415758 (WGS 84). The other clip methods are extract by mask using the feature class layers in ClimateHub.gdb/Regions
+
+ - ./classify-rasters.py - classifies rasters based strings contained in a Python dictionary in /ToolData/style/classifieddata.txt
 
  - ./get-clipped-statistics.py - get the min, max, mean, and standard devation (std) values for each region for each variable. Usefully in providing consistent color ramp across space and time for each region/variable. Values stored in /Doc/regional-statistics.txt as comma separated values region,variable,min,max, mean, std
 
 - ./make-maps.py - script that loops over each regional map document (Idaho, Washington, Oregon, PNW) and over all clipped raster layers (all variables and time periods). Each layer is added to the map document, a style is applied from a .lyr file, and then the map is exported as a pdf to /Doc/maps. There are over 600 maps procuded
 
-- ./unit-conversion.py -  script that applies unit conversion to raw raster layers and stores them in /Tooldata/conversion_layers
+
 
 General workflow overview
 
@@ -60,30 +64,30 @@ This tool requires the spatial analysis extension and was written to work with A
   - mywrapper.py - used beacause ArcGIS was complaining about running out of memory (not an issue in 10.2 using same methods) and it would not loop through all files at the same time. A little hacky/slow but works perfectly.
 3. Layers get unit conversions applied
   - variable units and unit conversions
-    #pr - from millimeters to inches
-    #  inch = mm * 0.0393701 
-    #tasmin and tasmax - from kelvin to fahrenheit
-    #  °F = (°K * 9/5.) - 459.67
-    #pet - from millimeters to inches
-    #  inch = mm * 0.0393701 
-    #gdd0, gdd3, gdd5, gdd10 - from celcius to fahrenheit
-    #  °F = 9/5 × (°C) + 32
-    #coldestnight - from kelvin to fahrenheit
-    #  °F = (°K * 9/5.) - 459.67
-    #freezefreeday - no change units in days
-    #prpercent - no change units in percent departure from 1971-2000 normal
-    #rhsmin and rhsmax - no change units in percent
-    #rsds - no change units in W/m2
-    #was - m/s (meters per second) to mph (miles per hour)
-    #  mph = m/s * 2.237
+    pr - from millimeters to inches
+      inch = mm * 0.0393701 
+    tasmin and tasmax - from kelvin to fahrenheit
+      °F = (°K * 9/5.) - 459.67
+    pet - from millimeters to inches
+      inch = mm * 0.0393701 
+    gdd0, gdd3, gdd5, gdd10 - from celcius to fahrenheit
+      °F = 9/5 × (°C) + 32
+    coldestnight - from kelvin to fahrenheit
+      °F = (°K * 9/5.) - 459.67
+    freezefreeday - no change units in days
+    prpercent - no change units in percent departure from 1971-2000 normal
+    rhsmin and rhsmax - no change units in percent
+    rsds - no change units in W/m2
+    was - m/s (meters per second) to mph (miles per hour)
+      mph = m/s * 2.237
 
-    Is a summary layer is vs the normal period and also temperature the conversion is
+    If a summary layer is vs the normal period and also temperature the conversion is
     to multiple the original nummbers by 1.8
+
 4. Raster layers clipped to regions Idaho, Oregon, Washington and Pacific Northwest. 
   - Done using clip-to-region.py which uses the extract by mask (requires spatial analyist extension) analysis tool for each each raster layer and for each region in the Feature Dataset (Regions) in ClimateHub.gdb. If Region is PNW the clip is to a spatial extent of -124.792995 41.5 -109.5 49.415758 (WGS 84).
   - Each new clipped layer begins with the name of the feature class and then the name of the raster layer file follows.
 
-Classify Raster method
 5. Classify rasters with classify-rasters.py
 
 6. Create .clr color ramp for each variable using style.txt and generate-clr.py
