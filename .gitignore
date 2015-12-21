@@ -62,6 +62,8 @@ target/
 *.tfw
 *.tif.ovr
 *.tif.xml
+Tooldata/classified.gdb*
+Tooldata/clipped_netcdf_layers*
 log
 arc.dir
 Doc/maps/

@@ -1,4 +1,5 @@
-import os 
+import os
+import shutil
 import arcpy
 from arcpy import env
 
@@ -44,7 +45,7 @@ fgdb = os.path.abspath(os.path.join(tooldata_folder, file_geodatabase_name))
 
 if arcpy.Exists(fgdb):
 	print "Exists... removing and making a new file geodatabase"
-	arcpy.Delete_management(fgdb)
+	shutil.rmtree(fgdb)
 	# Make classified file geodatabase
 	arcpy.CreateFileGDB_management(tooldata_folder, file_geodatabase_name)
 else:
@@ -58,7 +59,7 @@ print classify_dictionary
 arcpy.CheckOutExtension("spatial")
 
 # Set folder absolute paths
-input_folder = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'Tooldata', 'clipped_netcdf_layers'))
+input_folder = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'Tooldata', 'conversion_layers'))
 output_folder = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'Tooldata', 'classified.gdb'))
 
 arcpy.env.workspace = input_folder
@@ -72,13 +73,12 @@ for layer in raster_list:
         esri_grid_name = layer[:-4]
         output_raster = os.path.abspath(os.path.join(output_folder, esri_grid_name))
         index_string = index_lookup(esri_grid_name)
+        print input_raster
         print index_string
         print classify_dictionary[index_string]
-
-# Classify and save raster
-#classification = "-99 3 0;3 4 1;4 5 2;5 6 3;6 7 4;7 8 5;8 9 6;9 10 7;10 999 8"
-#classified_raster = arcpy.sa.Reclassify(input_raster, "Value", classification, "NODATA")
-#classified_raster.save(output_raster)
+        # Classify and save raster
+        classified_raster = arcpy.sa.Reclassify(input_raster, "Value", classify_dictionary[index_string], "NODATA")
+        classified_raster.save(output_raster)
 
 
 
