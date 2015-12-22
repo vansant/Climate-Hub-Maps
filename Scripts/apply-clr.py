@@ -27,7 +27,7 @@ def clr_lookup(raster_name):
     return index_string
 
 # Name of file geodatabase
-file_geodatabase_name = "classified.gdb"
+file_geodatabase_name = "clipped.gdb"
 
 # Path to tooldata folder
 tooldata_folder = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'Tooldata'))
@@ -50,7 +50,7 @@ for layer in raster_list:
     clr_name = clr_lookup(os.path.abspath(os.path.join(fgdb, layer)))
     clr_file = os.path.abspath(os.path.join(style_folder, clr_name))
     if os.path.isfile(clr_file):
-        classified_raster_file =  os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'Tooldata', 'classified.gdb', layer))
+        classified_raster_file =  os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'Tooldata', 'clipped.gdb', layer))
         # Apply .clr symbology
         arcpy.AddColormap_management(classified_raster_file, '', clr_file)
     else:

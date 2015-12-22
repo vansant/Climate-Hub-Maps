@@ -87,12 +87,13 @@ This tool requires the spatial analysis extension and was written to work with A
 4. Classify rasters with classify-rasters.py
   - Raster layers classified based on key value pairs located in /Scripts/values.py
 
-5. Apply .clr files using apply-clr.py
-  - Adds color maps to files using .clr files that were manually made.
-
-6. Raster layers clipped to regions Idaho, Oregon, Washington and Pacific Northwest. 
+5. Raster layers clipped to regions Idaho, Oregon, Washington and Pacific Northwest. 
   - Done using clip-to-region.py which uses the extract by mask (requires spatial analyist extension) analysis tool for each each raster layer and for each region in the Feature Dataset (Regions) in ClimateHub.gdb. If Region is PNW the clip is to a spatial extent of -124.792995 41.5 -109.5 49.415758 (WGS 84).
   - Each new clipped layer begins with the name of the feature class and then the name of the raster layer file follows.
+
+6. Apply .clr files using apply-clr.py
+  - Adds color maps to files using .clr files that were manually made.
+
 
 7. Create mxd for each region with layout view elements set up for a each MXD
   - Layout of elements can be updated for mxd and maps can be regenerated

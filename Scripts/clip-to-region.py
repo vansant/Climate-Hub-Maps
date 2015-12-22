@@ -1,5 +1,6 @@
 import arcpy
 import os
+import shutil
 from arcpy import env
 from arcpy.sa import *
 
@@ -14,22 +15,45 @@ else:
 
 # Climate Hub file geodatabase path
 feature_dataset_path = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'Tooldata', 'ClimateHub.gdb', 'Regions'))
-netcdf_layer_folder = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'Tooldata', 'conversion_layers'))
-env.workspace = feature_dataset_path 
-fcList = arcpy.ListFeatureClasses()
+netcdf_layer_folder = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'Tooldata', 'classified.gdb'))
+
 
 
 # Make netcdf_clipped_layers folder to store clipped geotiff files if it does not exist
-netcdf_clipped_layers = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'Tooldata', 'clipped_netcdf_layers'))
-if os.path.exists(netcdf_clipped_layers):
-    pass
+#netcdf_clipped_layers = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'Tooldata', 'clipped_netcdf_layers'))
+#if os.path.exists(netcdf_clipped_layers):
+#    pass
+#else:
+#    os.mkdir(netcdf_clipped_layers )
+
+# Name of file geodatabase
+file_geodatabase_name = "clipped.gdb"
+
+# Path to tooldata folder
+tooldata_folder = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'Tooldata'))
+
+fgdb = os.path.abspath(os.path.join(tooldata_folder, file_geodatabase_name))
+
+netcdf_clipped_layers = fgdb
+
+if arcpy.Exists(fgdb):
+	print "Exists... removing and making a new file geodatabase"
+	shutil.rmtree(fgdb)
+	# Make classified file geodatabase
+	arcpy.CreateFileGDB_management(tooldata_folder, file_geodatabase_name)
 else:
-    os.mkdir(netcdf_clipped_layers )
-
-netcdf_layers = [x for x in os.listdir(netcdf_layer_folder) if x.endswith('.tif')]
-print netcdf_layers, len(netcdf_layers)
+    # Make classified file geodatabase
+    arcpy.CreateFileGDB_management(tooldata_folder, file_geodatabase_name)
 
 
+arcpy.env.workspace = netcdf_layer_folder
+netcdf_layers = arcpy.ListRasters()
+
+#netcdf_layers = [x for x in os.listdir(netcdf_layer_folder) if x.endswith('.tif')]
+#print netcdf_layers, len(netcdf_layers)
+
+env.workspace = feature_dataset_path 
+fcList = arcpy.ListFeatureClasses()
 
 # Clip rasters to each fc (region in feature dataset)
 for fc in fcList:
@@ -37,18 +61,13 @@ for fc in fcList:
     for netcdf in netcdf_layers:
         print fc, netcdf
         if fc == "PNW":
-            #rectExtract = arcpy.sa.ExtractByRectangle(os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'Tooldata', 'downloaded_netcdf_layers', netcdf)), "-124.792995 41.5 -109.5 49.415758", "INSIDE")
-            #print rectExtract
-            #rectExtract.save(os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'Tooldata', netcdf_clipped_layers, fc + '_' + netcdf[:-4] + '.tif')))
-            #arcpy.sa.RasterCalculator("\"%%s%\" * 0.0393701" % rectExtract , os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'Tooldata', netcdf_clipped_layers, fc + '_' + netcdf[:-4] + '.tif')))
-            raster_layer = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'Tooldata', 'conversion_layers', netcdf))
+            raster_layer = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'Tooldata', 'classified.gdb', netcdf))
             rectExtract = arcpy.sa.ExtractByRectangle(raster_layer, "-124.792995 41.5 -109.5 49.415758", "INSIDE")
-            rectExtract.save(os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'Tooldata', netcdf_clipped_layers, fc + '_' + netcdf[:-4] + '.tif')))
-            
+            rectExtract.save(os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'Tooldata', netcdf_clipped_layers, fc + '_' + netcdf)))
 
         else:
-            outExtractByMask = ExtractByMask(os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'Tooldata', 'conversion_layers', netcdf)), fc)
-            outExtractByMask.save(os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'Tooldata', netcdf_clipped_layers, fc + '_' + netcdf[:-4] + '.tif'))) 
+            outExtractByMask = ExtractByMask(os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'Tooldata', 'classified.gdb', netcdf)), fc)
+            outExtractByMask.save(os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'Tooldata', netcdf_clipped_layers, fc + '_' + netcdf))) 
     
 
 arcpy.CheckInExtension("Spatial")

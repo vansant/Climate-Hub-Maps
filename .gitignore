@@ -63,6 +63,7 @@ target/
 *.tif.ovr
 *.tif.xml
 Tooldata/classified.gdb*
+Tooldata/clipped.gdb*
 Tooldata/clipped_netcdf_layers*
 log
 arc.dir
