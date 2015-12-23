@@ -61,7 +61,7 @@ arcpy.CheckOutExtension("spatial")
 # Set folder absolute paths
 input_folder = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'Tooldata', 'conversion_layers'))
 output_folder = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'Tooldata', 'classified.gdb'))
-
+unconverted_folder = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'Tooldata', 'downloaded_netcdf_layers'))
 arcpy.env.workspace = input_folder
 raster_list = arcpy.ListRasters()
 
@@ -69,7 +69,13 @@ raster_list = arcpy.ListRasters()
 
 for layer in raster_list:
         # Local variables:
+        unconverted_list = ['freezefreeday', 'prpercent', 'rhsmin', 'rhsmax', 'rsds']
+
         input_raster = os.path.abspath(os.path.join(input_folder, layer))
+        for unconverted in unconverted_list:
+            if unconverted in layer:
+                input_raster = os.path.abspath(os.path.join(unconverted_folder, layer))
+
         esri_grid_name = layer[:-4]
         output_raster = os.path.abspath(os.path.join(output_folder, esri_grid_name))
         index_string = index_lookup(esri_grid_name)

@@ -86,23 +86,23 @@ for netcdf in netcdf_layers:
 
     except:
         pass
-        if 'freezefreeday' in netcdf.split('_'):
-            copy_list.append(netcdf)
-        if 'prpercent' in netcdf.split('_'):
-            copy_list.append(netcdf)
-        if 'rhsmin' in netcdf.split('_'):
-            copy_list.append(netcdf)
-        if 'rhsmax' in netcdf.split('_'):
-            copy_list.append(netcdf)
-        if 'rsds' in netcdf.split('_'):
-            copy_list.append(netcdf)
+        # if 'freezefreeday' in netcdf.split('_'):
+        #     copy_list.append(netcdf)
+        # if 'prpercent' in netcdf.split('_'):
+        #     copy_list.append(netcdf)
+        # if 'rhsmin' in netcdf.split('_'):
+        #     copy_list.append(netcdf)
+        # if 'rhsmax' in netcdf.split('_'):
+        #     copy_list.append(netcdf)
+        # if 'rsds' in netcdf.split('_'):
+        #     copy_list.append(netcdf)
         
     
 
 arcpy.CheckInExtension("Spatial")
 
 # Copy over layers that did not need a unit converion
-for copy_file in copy_list:
-    print "Copying %s into conversion folder - no unit conversion" % copy_file
-    arcpy.CopyRaster_management(os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'Tooldata', 'downloaded_netcdf_layers', copy_file)), os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'Tooldata', 'conversion_layers', copy_file)))
+# for copy_file in copy_list:
+#     print "Copying %s into conversion folder - no unit conversion" % copy_file
+#     arcpy.CopyRaster_management(os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'Tooldata', 'downloaded_netcdf_layers', copy_file)), os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'Tooldata', 'conversion_layers', copy_file)))
 
