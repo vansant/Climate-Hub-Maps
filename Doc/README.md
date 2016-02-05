@@ -2,7 +2,7 @@
 ArcGIS Map Automation for Climate Hub Mapping Project
 Project Description: This joint venture between the University of Idaho (UI) and the PNW Regional Climate Hub will create a web-based, digital resource that provides downscaled, simple, current and projected climate maps of the PNW region. 
 
-Static, downloadable maps will feature 6 climate metrics of interest to land managers. These metrics include: temperature, precipitation, freeze-free days, cold hardiness zones, accumulated growing degree days, and reference evapotranspiration. Climatic variables will be presented based on current conditions and under RCP 4.5 and will average findings across climate models for each metric. If time and resources permit, maps will also be generated based on the RCP 8.5. Users will have access to maps that feature information about the climatic metrics for the entire PNW region and each state in the region (e.g., ID, WA and OR) for four time periods (1981-2010, 2011-2040, 2041-2070 and 2070-2099). Specifically we will produce maps of:
+Static, downloadable maps will feature myriad climate metrics of interest to land managers. These metrics include: temperature, precipitation, freeze-free days, cold hardiness zones, accumulated growing degree days, and reference evapotranspiration. Climatic variables will be presented based on current conditions and under RCP 4.5 and will average findings across climate models for each metric. If time and resources permit, maps will also be generated based on the RCP 8.5. Users will have access to maps that feature information about the climatic metrics for the entire PNW region and each state in the region (e.g., ID, WA and OR) for four time periods (1981-2010, 2011-2040, 2041-2070 and 2070-2099). Specifically we will produce maps of:
 (1)	Mean maximum and minimum temperature for annual, Dec-Feb, Mar-May, Jun-Aug, Sep-Nov
 (2)	Accumulated precipitation for annual, Dec-Feb, Mar-May, Jun-Aug, Sep-Nov
 (3)	Reference ET for annual, Dec-Feb, Mar-May, Jun-Aug, Sep-Nov
@@ -91,6 +91,33 @@ This tool requires the spatial analysis extension and was written to work with A
   - Done using clip-to-region.py which uses the extract by mask (requires spatial analyist extension) analysis tool for each each raster layer and for each region in the Feature Dataset (Regions) in ClimateHub.gdb. If Region is PNW the clip is to a spatial extent of -124.792995 41.5 -109.5 49.415758 (WGS 84).
   - Each new clipped layer begins with the name of the feature class and then the name of the raster layer file follows.
 
+6. Run generate-lyr.py within arcmap python prompt
+  - addes one of each raster type that requires a .lyr file to the map
+## Manual process
+## For each variable and data range add classified raster layer to map
+## Applys clr to classified raster 
+## Manually edit label values
+## Export into Tooldata/lyr folder
+
+
+## to this point
+
+
+## Setup map layout for for the region and variable (legends have different number of classified values)
+## Export .sld file
+## Run generate maps - this tool builds maps for one variable at a time
+## -updates map title automatically for each layer
+
+
+8. Run make-maps.py which processes all clipped raster layer
+  - Adds layer to regional mxd file
+  - Applies symbology from region-variable.lyr file
+  - Save as a PDF into /Doc/maps
+
+
+
+
+## Old process below
 6. Apply .clr files using apply-clr.py
   - Adds color maps to files using .clr files that were manually made.
 
@@ -98,7 +125,3 @@ This tool requires the spatial analysis extension and was written to work with A
 7. Create mxd for each region with layout view elements set up for a each MXD
   - Layout of elements can be updated for mxd and maps can be regenerated
   - Create Idaho.mxd, Oregon.mxd, Washington.mxd, PNW.mxd 
-8. Run make-maps.py which processes all clipped raster layer
-  - Adds layer to regional mxd file
-  - Applies symbology from region-variable.lyr file
-  - Save as a PDF into /Doc/maps

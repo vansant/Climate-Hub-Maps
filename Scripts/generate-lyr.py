@@ -64,23 +64,55 @@ all_clipped_layers = raster_list
 
 mxd = arcpy.mapping.MapDocument("CURRENT")
 df = arcpy.mapping.ListDataFrames(mxd, "*")[0]
+
+# Apply a .lyr file to the raster to get colors and labels
+lyr_folder = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'Tooldata', 'lyr'))
+#print layer
+
+# Values are added if example layer is stored here
+test_list = []
+
 for layer in raster_list:
+
+    splitter  = layer.split("_")
+    variable = splitter[2]
+    month_range = splitter[3]
+    time_frame = "raw"
+    if "vs" in splitter:
+        time_frame = "diff"
+
+    lyr_string = variable + "_" + month_range + "_" + time_frame + ".lyr"
+
+    lyr_file = os.path.abspath(os.path.join(lyr_folder, lyr_string))
+    if not lyr_string in test_list:
+        test_list.append(lyr_string)
+        print lyr_file
+        #if 'gdd10' in layer and 'PNW' in layer:
+        netcdf_layer = os.path.abspath(os.path.join(netcdf_clipped_layers, layer))
+        #print "loading in %s layer" % layer
+        #layer_path = os.path.abspath(os.path.join(os.path.dirname( __file__ ), 'Tooldata', 'clipped.gdb', layer))
+        #addLayer = arcpy.mapping.Layer(r'%s' % netcdf_layer)
+        #arcpy.mapping.AddLayer(df, addLayer, "TOP")
+        clr_name = clr_lookup(os.path.abspath(os.path.join(netcdf_clipped_layers, layer)))
+        clr_file = os.path.abspath(os.path.join(style_folder, clr_name))
+        print clr_file
+        if os.path.isfile(clr_file):
+            classified_raster_file =  os.path.abspath(os.path.join(os.path.dirname( __file__ ), 'Tooldata', 'clipped.gdb', layer))
+            # Apply .clr symbology
+            arcpy.AddColormap_management(classified_raster_file, '', clr_file)
+        else:
+            print "Missing .clr for %s" % layer
+    else:
+        pass
+
+
+    # If one does not exists this addeds a layer to the map
+    # Need to manually create the .lyr files for each file added to the map
+    # To export a .lyr right click on layer in table of contents and click create a layer package
+    # 
+
     
-    if 'gdd10' in layer and 'PNW' in layer:
-	    netcdf_layer = os.path.abspath(os.path.join(netcdf_clipped_layers, layer))
-	    #print "loading in %s layer" % layer
-	    #layer_path = os.path.abspath(os.path.join(os.path.dirname( __file__ ), 'Tooldata', 'clipped.gdb', layer))
-	    #addLayer = arcpy.mapping.Layer(r'%s' % netcdf_layer)
-	    #arcpy.mapping.AddLayer(df, addLayer, "TOP")
-	    clr_name = clr_lookup(os.path.abspath(os.path.join(netcdf_clipped_layers, layer)))
-	    clr_file = os.path.abspath(os.path.join(style_folder, clr_name))
-	    print clr_file
-	    if os.path.isfile(clr_file):
-	        classified_raster_file =  os.path.abspath(os.path.join(os.path.dirname( __file__ ), 'Tooldata', 'clipped.gdb', layer))
-	        # Apply .clr symbology
-	        arcpy.AddColormap_management(classified_raster_file, '', clr_file)
-	    else:
-	        print "Missing .clr for %s" % layer
+
 	    
 # Path to .lyr files
 #lyr_folder = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'Tooldata', 'lyr'))
