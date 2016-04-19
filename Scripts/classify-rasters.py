@@ -83,6 +83,11 @@ for layer in raster_list:
         print index_string
         print classify_dictionary[index_string]
         # Classify and save raster
+
+        # if 'coldestnight' in input_raster:
+        #     print 'asdasdasdasdasdasdasd'
+        #     pass
+        # else:
         classified_raster = arcpy.sa.Reclassify(input_raster, "Value", classify_dictionary[index_string], "NODATA")
         classified_raster.save(output_raster)
 

@@ -40,21 +40,21 @@ for netcdf in netcdf_layers:
         if 'pr' in netcdf.split('_'):
             print "you got pr"
             conversion = arcpy.sa.Raster(raw_raster_layer) * 0.0393701
-        if 'tasmin' in netcdf.split('_'):
-            print "you got tasmin"
-            # Different calculation for difference from normal (vs)
-            if 'vs' in netcdf.split('_'):
-                print "you got tasmin difference"
-                conversion = arcpy.sa.Raster(raw_raster_layer) * 1.8
-            else:
-                conversion = arcpy.sa.Raster(raw_raster_layer) * 9/5. - 459.67
-        if 'tasmax' in netcdf.split('_'):
-            # Different calculation for difference from normal (vs)
-            if 'vs' in netcdf.split('_'):
-                print "you got tasmax difference"
-                conversion = arcpy.sa.Raster(raw_raster_layer) * 1.8
-            else:
-                conversion = arcpy.sa.Raster(raw_raster_layer) * 9/5. - 459.67
+        # if 'tasmin' in netcdf.split('_'):
+        #     print "you got tasmin"
+        #     # Different calculation for difference from normal (vs)
+        #     if 'vs' in netcdf.split('_'):
+        #         print "you got tasmin difference"
+        #         conversion = arcpy.sa.Raster(raw_raster_layer) * 1.8
+        #     else:
+        #         conversion = arcpy.sa.Raster(raw_raster_layer) * 9/5. - 459.67
+        # if 'tasmax' in netcdf.split('_'):
+        #     # Different calculation for difference from normal (vs)
+        #     if 'vs' in netcdf.split('_'):
+        #         print "you got tasmax difference"
+        #         conversion = arcpy.sa.Raster(raw_raster_layer) * 1.8
+        #     else:
+        #         conversion = arcpy.sa.Raster(raw_raster_layer) * 9/5. - 459.67
         if 'pet' in netcdf.split('_'):
             print "you got pet"
             conversion = arcpy.sa.Raster(raw_raster_layer) * 0.0393701
@@ -70,14 +70,14 @@ for netcdf in netcdf_layers:
         if 'gdd10' in netcdf.split('_'):
             print "you got gdd10"
             conversion = arcpy.sa.Raster(raw_raster_layer) * 1.8  
-        if 'coldestnight' in netcdf.split('_'):
-            print "you got coldestnight"
-            # Different calculation for difference from normal (vs)
-            if 'vs' in netcdf.split('_'):
-                print "you got coldestnight difference"
-                conversion = arcpy.sa.Raster(raw_raster_layer) * 1.8
-            else:
-                conversion = arcpy.sa.Raster(raw_raster_layer) * 9/5. - 459.67
+        # if 'coldestnight' in netcdf.split('_'):
+        #     print "you got coldestnight"
+        #     # Different calculation for difference from normal (vs)
+        #     if 'vs' in netcdf.split('_'):
+        #         print "you got coldestnight difference"
+        #         conversion = arcpy.sa.Raster(raw_raster_layer) * 1.8
+        #     else:
+        #         conversion = arcpy.sa.Raster(raw_raster_layer) * 9/5. - 459.67
         if 'was' in netcdf.split('_'):
             print "you got was"
             conversion = arcpy.sa.Raster(raw_raster_layer) * 2.237
@@ -85,24 +85,31 @@ for netcdf in netcdf_layers:
         conversion.save(conversion_layer)
 
     except:
+  
+        if 'freezefreeday' in netcdf.split('_'):
+            copy_list.append(netcdf)
+        if 'prpercent' in netcdf.split('_'):
+            copy_list.append(netcdf)
+        if 'rhsmin' in netcdf.split('_'):
+            copy_list.append(netcdf)
+        if 'rhsmax' in netcdf.split('_'):
+            copy_list.append(netcdf)
+        if 'rsds' in netcdf.split('_'):
+            copy_list.append(netcdf)
+        if 'tasmin' in netcdf.split('_'):
+            copy_list.append(netcdf)
+        if 'tasmax' in netcdf.split('_'):
+            copy_list.append(netcdf)
+        if 'coldestnight' in netcdf.split('_'):
+            copy_list.append(netcdf)
         pass
-        # if 'freezefreeday' in netcdf.split('_'):
-        #     copy_list.append(netcdf)
-        # if 'prpercent' in netcdf.split('_'):
-        #     copy_list.append(netcdf)
-        # if 'rhsmin' in netcdf.split('_'):
-        #     copy_list.append(netcdf)
-        # if 'rhsmax' in netcdf.split('_'):
-        #     copy_list.append(netcdf)
-        # if 'rsds' in netcdf.split('_'):
-        #     copy_list.append(netcdf)
         
     
 
 arcpy.CheckInExtension("Spatial")
 
 # Copy over layers that did not need a unit converion
-# for copy_file in copy_list:
-#     print "Copying %s into conversion folder - no unit conversion" % copy_file
-#     arcpy.CopyRaster_management(os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'Tooldata', 'downloaded_netcdf_layers', copy_file)), os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'Tooldata', 'conversion_layers', copy_file)))
+for copy_file in copy_list:
+    print "Copying %s into conversion folder - no unit conversion" % copy_file
+    arcpy.CopyRaster_management(os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'Tooldata', 'downloaded_netcdf_layers', copy_file)), os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'Tooldata', 'conversion_layers', copy_file)))
 
